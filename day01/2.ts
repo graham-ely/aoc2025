@@ -10,8 +10,8 @@ var dial: number       = 50;
 var zero_count: number = 0;
 
 for(const instr of data_arr){
-    //reset dial
-    if(dial > 100 || dial < -100) {
+    //reset dial, got held up for awhile here not realizing I needed the if statement/to add to zc
+    if( dial > 100 || dial < -100 ) {
         zero_count++;
     }
     dial = dial % 100;
