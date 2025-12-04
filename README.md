@@ -1,0 +1,1 @@
+https://adventofcode.com/ 2025. starting with TS this year, we'll see if I stick with it for all 12
