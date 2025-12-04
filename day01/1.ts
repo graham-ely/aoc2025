@@ -5,12 +5,12 @@ const data_path: string = "1_data.txt";
 const data: string = fs.readFileSync(data_path, 'utf-8');
 const data_arr: string[] = data.split(/\r?\n/);
 
-var sum:number = 50;
+var sum: number        = 50;
 var zero_count: number = 0;
 
 for(const instr of data_arr){
-    const dir:string      = instr.charAt(0);
-    const distance:number = parseInt(instr.slice(1));
+    const dir: string      = instr.charAt(0);
+    const distance: number = parseInt(instr.slice(1));
 
     if( dir == 'R' ) {
         sum += distance;
@@ -21,12 +21,6 @@ for(const instr of data_arr){
     if( sum % 100 == 0 ){
         zero_count++;
     }
-
-    //console.log(dir, distance);
-
 }
 
-
 console.log(zero_count);
-//console.log(data_arr);
-
