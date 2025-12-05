@@ -13,7 +13,7 @@ for(const instr of data_arr){
     const first_id = parseInt(instr.substring(0, instr.indexOf('-')));
     const second_id = parseInt(instr.substring(instr.indexOf('-') + 1));
 
-    for( let i = first_id; i <= second_id; i++ ) {
+    for(let i = first_id; i <= second_id; i++) {
         var curr_id: string = i.toString();
         var curr_id_len: number = curr_id.length;
         var is_repeating: boolean = true;

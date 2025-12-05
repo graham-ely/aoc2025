@@ -14,13 +14,13 @@ for(const instr of data_arr){
 
     console.log(instr, first_id, second_id)
 
-    for( let i = parseInt(first_id); i <= parseInt(second_id); i++ ) {
+    for(let i = parseInt(first_id); i <= parseInt(second_id); i++) {
         var curr_id: string = i.toString();
-        if( curr_id.length % 2 == 0 ) {
+        if(curr_id.length % 2 == 0) {
             const first_half_id  = curr_id.substring(0, curr_id.length / 2);
             const second_half_id = curr_id.substring(curr_id.length / 2);
 
-            if( first_half_id == second_half_id ) {
+            if(first_half_id == second_half_id) {
                 invalid_sum += i;
             }
 
