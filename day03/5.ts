@@ -7,7 +7,6 @@ const data: string = fs.readFileSync(data_path, 'utf-8');
 const data_arr: string[] = data.split(/\r?\n/);
 
 var sum_j: number = 0;
-var ids: string[] = [];
 
 for(const bank of data_arr){
     var largest_bank: number = 0;
@@ -36,5 +35,4 @@ for(const bank of data_arr){
 }
 
 console.log(data_arr);
-console.log(ids);
 console.log(sum_j);
