@@ -8,10 +8,12 @@ const data: string = fs.readFileSync(data_path, 'utf-8');
 var data_arr: string[] = data.split(/\r?\n/);
 
 var sum_avail_rolls: number = 0;
-var ids: string[] = [];
-var new_roll_map: string[] = [];
-var prev_sum_ar: number = -1;
+var prev_sum_ar: number     = -1;
 
+var rolls: string[] = [];
+var new_roll_map: string[] = [];
+
+// remove rolls until a pass can't find any rolls to remove
 while(sum_avail_rolls != prev_sum_ar){
     prev_sum_ar = sum_avail_rolls;
 
@@ -21,17 +23,11 @@ while(sum_avail_rolls != prev_sum_ar){
         for(let j = 0; j < data_arr.length; j++ ) {
             var current_item: string = data_arr[i][j];
 
-            if(current_item == '@') {
-                const too_many_adj: boolean = check_adj_rolls(i, j, data_arr);
-
-                if(!too_many_adj) {
-                    new_map_line += "x";
-                    sum_avail_rolls++;
-                } else {
-                    new_map_line += "@";
-                }
+            if(current_item == '@' && !check_adj_rolls(i, j, data_arr)) {
+                new_map_line += "x";
+                sum_avail_rolls++;
             } else {
-                new_map_line += ".";
+                new_map_line += current_item;
             }
         }
 
@@ -42,8 +38,8 @@ while(sum_avail_rolls != prev_sum_ar){
     new_roll_map = [];
 }
 
-
-function check_adj_rolls(x:number, y:number, arr: string[]) {
+// check if too many rolls are adjacent to the current position to remove the roll
+function check_adj_rolls(x:number, y:number, arr: string[]): boolean {
     var sum_adj_rolls: number = 0;
 
     for(let i = -1; i < 2; i++) {
@@ -53,7 +49,8 @@ function check_adj_rolls(x:number, y:number, arr: string[]) {
             } else {
                 var x_pos = x + i;
                 var y_pos = y + j;
-                // in bounds check
+
+                // in-bounds check
                 if(x_pos >= 0 && y_pos >= 0 && x_pos <= arr[0].length - 1 && y_pos <= arr.length - 1) {
                     if(arr[x_pos][y_pos] == '@') {
                         sum_adj_rolls++;
@@ -64,7 +61,7 @@ function check_adj_rolls(x:number, y:number, arr: string[]) {
     }
 
     if(sum_adj_rolls < 4){
-        ids.push("x: " + x + "y: " + y);
+        rolls.push("x: " + x + "y: " + y);
         return false;
     } else {
         return true;
@@ -72,6 +69,6 @@ function check_adj_rolls(x:number, y:number, arr: string[]) {
 
 }
 console.log(data_arr);
-console.log(ids);
+console.log(rolls);
 console.log(sum_avail_rolls);
 console.log(new_roll_map)
