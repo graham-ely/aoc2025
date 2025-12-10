@@ -17,10 +17,10 @@ var new_roll_map: string[] = [];
 while(sum_avail_rolls != prev_sum_ar){
     prev_sum_ar = sum_avail_rolls;
 
-    for(let i = 0; i < data_arr[0].length; i++) {
+    for(let i = 0; i < data_arr.length; i++) {
         var new_map_line: string = "";
 
-        for(let j = 0; j < data_arr.length; j++ ) {
+        for(let j = 0; j < data_arr[0].length; j++ ) {
             var current_item: string = data_arr[i][j];
 
             if(current_item == '@' && !check_adj_rolls(i, j, data_arr)) {
@@ -39,7 +39,7 @@ while(sum_avail_rolls != prev_sum_ar){
 }
 
 // check if too many rolls are adjacent to the current position to remove the roll
-function check_adj_rolls(x:number, y:number, arr: string[]): boolean {
+function check_adj_rolls(row: number, col: number, arr: string[]): boolean {
     var sum_adj_rolls: number = 0;
 
     for(let i = -1; i < 2; i++) {
@@ -47,12 +47,12 @@ function check_adj_rolls(x:number, y:number, arr: string[]): boolean {
             if(i == 0 && j == 0) {
 
             } else {
-                var x_pos = x + i;
-                var y_pos = y + j;
+                var row_pos = row + i;
+                var col_pos = col + j;
 
                 // in-bounds check
-                if(x_pos >= 0 && y_pos >= 0 && x_pos <= arr[0].length - 1 && y_pos <= arr.length - 1) {
-                    if(arr[x_pos][y_pos] == '@') {
+                if(row_pos >= 0 && col_pos >= 0 && row_pos <= arr.length - 1 && col_pos <= arr[0].length - 1) {
+                    if(arr[row_pos][col_pos] == '@') {
                         sum_adj_rolls++;
                     }
                 }
@@ -61,7 +61,7 @@ function check_adj_rolls(x:number, y:number, arr: string[]): boolean {
     }
 
     if(sum_adj_rolls < 4){
-        rolls.push("x: " + x + "y: " + y);
+        rolls.push("row: " + row + "col: " + col);
         return false;
     } else {
         return true;
