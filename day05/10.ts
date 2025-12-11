@@ -10,7 +10,6 @@ var sum: number = 0;
 var split_index = data_arr.indexOf("");
 
 var fresh_ranges_raw: string[] = data_arr.slice(0, split_index);
-//var ingredients: string[]  = data_arr.slice(split_index + 1);
 var fresh_ranges: Array<[number, number]> = [];
 var fresh_ranges_original: Array<[number, number]> = [];
 var combined_ranges: Array<[number, number]> = [];
@@ -25,7 +24,7 @@ for(const fresh_range of fresh_ranges_raw) {
     fresh_ranges_original.push([range_start, range_end]);
 }
 
-var prev_len = -1;
+var prev_len: number = -1;
 
 while(prev_len != fresh_ranges.length) {
     prev_len = combined_ranges.length;
@@ -35,8 +34,7 @@ while(prev_len != fresh_ranges.length) {
         if(combined_ranges.length == 0) {
             combined_ranges.push([...fresh_range]);
         } else {
-            var push_new: boolean      = true;
-            var duplicate_val: boolean = false;
+            var push_new: boolean = true;
 
             for(let [idx, existing_range] of combined_ranges.entries()) {
                 if(fresh_range[0] > existing_range[1] || fresh_range[1] < existing_range[0]) {
@@ -58,34 +56,22 @@ while(prev_len != fresh_ranges.length) {
                         push_new = false;
                     }
                 } else if (fresh_range[0] == existing_range[0] && fresh_range[1] == existing_range[1]) {
-                    // flag duplicate for removal
+                    // duplicate
                     push_new = false;
-                    duplicate_val = true;
                 }
-
             }
 
             if(push_new == true) {
                 combined_ranges.push([...fresh_range]);
-            } else if(duplicate_val == true) {
-                //combined_ranges.splice(combined_ranges.indexOf(fresh_range), 1);
             }
         }
     }
 
     fresh_ranges = [];
     combined_ranges.forEach((subArray) => fresh_ranges.push([...subArray]));
-
 }
 
 combined_ranges.sort(compare);
-
-
-for(const range of combined_ranges) {
-    sum += ( range[1] - range[0] + 1 );
-}
-
-
 
 function compare(a:[number, number], b:[number, number]) {
     if(a[0] < b[0]) {
@@ -97,13 +83,10 @@ function compare(a:[number, number], b:[number, number]) {
     return 1;
 }
 
-console.log(data_arr);
+for(const range of combined_ranges) {
+    sum += ( range[1] - range[0] + 1 );
+}
+
 console.log(fresh_ranges_original)
 console.log(combined_ranges);
 console.log(sum);
-
-//353580677618840 too high
-//349685392216382 too high
-//343377710090112 too high
-//336790092076620
-//334284659810868 too low
