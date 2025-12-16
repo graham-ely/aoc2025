@@ -22,7 +22,6 @@ function process_tachyon_coord(row: number, col: number, arr: string[]) {
     } else if(arr[row][col] == '|'){
         if(arr[row + 1][col] == '^'){
             arr[row + 1] = arr[row + 1].substring(0, col - 1) + '|^|' + arr[row + 1].substring(col + 2);
-            //sum++;
         } else {
             arr[row + 1] = arr[row + 1].substring(0, col) + '|' + arr[row + 1].substring(col + 1);
         }
@@ -42,7 +41,8 @@ for(let i = 0; i < data_arr.length; i++) {
 
 var values_array: number[][] = [];
 
-for(let i = 0; i < data_arr_nb.length; i++) { // don't process final row
+// fill with zeroes
+for(let i = 0; i < data_arr_nb.length; i++) {
     var row_to_populate: number[] = [];
     for(let j = 0; j < data_arr_nb[0].length; j++){
         row_to_populate.push(0);
@@ -50,8 +50,7 @@ for(let i = 0; i < data_arr_nb.length; i++) { // don't process final row
     values_array.push(row_to_populate);
 }
 
-
-for(let i = 0; i < data_arr_nb.length; i++) { // don't process final row
+for(let i = 0; i < data_arr_nb.length; i++) {
     for(let j = 0; j < data_arr_nb[0].length; j++){
         if(data_arr_nb[i][j] == '|' || i == 0){
             process_point_value(i, j);
@@ -83,24 +82,9 @@ function process_point_value(row: number, col: number) {
     values_array[row][col] = point_value;
 }
 
+// sum final row to get solution
 for(var i = 0; i < values_array[0].length; i++) {
     sum += values_array[values_array.length - 1][i];
 }
 
-//console.log(data_arr);
-//console.log(data_arr_nb);
 console.log(sum);
-
-/*
-for(var row of data_arr_nb) {
-    console.log(row);
-}
-
-for(var row2 of values_array) {
-    console.log(row2);
-}
-    */
-
-// 3046 too low
-// 11789740 too low
-// 145375123 too low
