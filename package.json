@@ -3,5 +3,8 @@
   "devDependencies": {
     "@types/node": "^24.10.1",
     "tsx": "^4.21.0"
+  },
+  "dependencies": {
+    "micro-memoize": "^5.1.1"
   }
 }
