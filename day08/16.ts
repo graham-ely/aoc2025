@@ -5,16 +5,14 @@ import * as fs from 'fs';
 const data_path: string   = "15_data.txt";
 const data: string = fs.readFileSync(data_path, 'utf-8');
 const data_arr: string[] = data.split(/\r?\n/);
-const box_arr: [number, number, number][] = [];
-const box_dist_arr: [number[]] = [];
+const box_arr: number[][] = [];
+const box_dist_arr: number[][] = [];
 const lowest_from_point_arr: number[] = [];
-var circuits: [number[]] = [];
-
-var sum: number = 0;
+var circuits: number[][] = [];
 
 // process strings to tuples
 for(let i = 0; i < data_arr.length; i++) {
-    box_arr.push(data_arr[i].split(','));
+    box_arr.push(data_arr[i].split(',').map(x => Number(x)));
 }
 
 // populate dist array w/ maxint
@@ -22,12 +20,11 @@ for(let i = 0; i < box_arr.length; i++) {
     var new_row = [];
     for(let j = 0; j < box_arr.length; j++) {
         new_row.push(Number.MAX_SAFE_INTEGER);
-        //new_row.push(-1);
     }
     box_dist_arr.push(new_row);
 }
 
-// build array with distances between all points
+// build array with distances between all points, only build top right half
 for(let i = 0; i < box_arr.length; i++) {
     for(let j = i + 1; j < box_arr.length; j++) {
         var dist_between_boxes: number = calc_dist_between_boxes(box_arr[i], box_arr[j])
@@ -47,14 +44,16 @@ for(let i = 0; i < box_dist_arr.length; i++) {
 
     lowest_from_point_arr.push(lowest_distance);
 }
-//var lowest_points: [number, number] = [0, 0];
 
-//for(var loops = 0; loops < 1000; loops++) {
-while(circuits.length == 0 || circuits[0].length < 1000) {
+var lowest_idx  = -1;
+var lowest_idx2 = -1;
+var lowest_val  = -1;
+
+while(circuits.length == 0 || circuits[0].length < data_arr.length) {
     var find_lowest_return = find_lowest(lowest_from_point_arr);
-    var lowest_idx  = find_lowest_return[0];
-    var lowest_val  = find_lowest_return[1];
-    var lowest_idx2 = box_dist_arr[lowest_idx].indexOf(lowest_val);
+    lowest_idx  = find_lowest_return[0];
+    lowest_val  = find_lowest_return[1];
+    lowest_idx2 = box_dist_arr[lowest_idx].indexOf(lowest_val);
 
     // update lowest point array to next lowest point
     lowest_from_point_arr[lowest_idx] = find_next_lowest(box_dist_arr[lowest_idx], lowest_val);
@@ -88,14 +87,11 @@ while(circuits.length == 0 || circuits[0].length < 1000) {
 
 var final_2_x_product = box_arr[lowest_idx][0] * box_arr[lowest_idx2][0];
 
-//circuits.push(lowest_points);
-
-function calc_dist_between_boxes(box1 :[number, number, number], box2 :[number, number, number]): number {
+function calc_dist_between_boxes(box1: number[], box2: number[]): number {
     return Math.sqrt(Math.pow(box1[0] - box2[0], 2) + Math.pow(box1[1] - box2[1], 2) + Math.pow(box1[2] - box2[2], 2));
 }
 
 function find_lowest(point_arr: number[]) {
-
     var lowest_distance: number = Number.MAX_SAFE_INTEGER;
     var lowest_index: number = 0;
 
@@ -107,11 +103,9 @@ function find_lowest(point_arr: number[]) {
     }
 
     return [lowest_index, lowest_distance];
-
 }
 
 function find_next_lowest(point_arr: number[], curr_lowest: number) {
-
     var next_lowest_distance: number = Number.MAX_SAFE_INTEGER;
 
     for(let i = 0; i < point_arr.length; i++) {
@@ -121,11 +115,9 @@ function find_next_lowest(point_arr: number[], curr_lowest: number) {
     }
 
     return next_lowest_distance;
-
 }
 
 // checking based on point index rather than point itself
-// cases: both in circuit, 1 in circuit, none in circuit
 function check_in_circuit(box1 :number, box2 :number): [number, number] {
     var circuit_box_1 = -1;
     var circuit_box_2 = -1;
@@ -142,8 +134,5 @@ function check_in_circuit(box1 :number, box2 :number): [number, number] {
     return [circuit_box_1, circuit_box_2];
 }
 
-
 console.log(circuits)
 console.log(final_2_x_product);
-
-// 576 too low

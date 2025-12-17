@@ -5,16 +5,14 @@ import * as fs from 'fs';
 const data_path: string   = "15_data.txt";
 const data: string = fs.readFileSync(data_path, 'utf-8');
 const data_arr: string[] = data.split(/\r?\n/);
-const box_arr: [number, number, number][] = [];
-const box_dist_arr: [number[]] = [];
+const box_arr: number[][] = [];
+const box_dist_arr: number[][] = [];
 const lowest_from_point_arr: number[] = [];
-var circuits: [number[]] = [];
-
-var sum: number = 0;
+var circuits: number[][] = [];
 
 // process strings to tuples
 for(let i = 0; i < data_arr.length; i++) {
-    box_arr.push(data_arr[i].split(','));
+    box_arr.push(data_arr[i].split(',').map(x => Number(x)));
 }
 
 // populate dist array w/ maxint
@@ -22,12 +20,11 @@ for(let i = 0; i < box_arr.length; i++) {
     var new_row = [];
     for(let j = 0; j < box_arr.length; j++) {
         new_row.push(Number.MAX_SAFE_INTEGER);
-        //new_row.push(-1);
     }
     box_dist_arr.push(new_row);
 }
 
-// build array with distances between all points
+// build array with distances between all points, only build top right half
 for(let i = 0; i < box_arr.length; i++) {
     for(let j = i + 1; j < box_arr.length; j++) {
         var dist_between_boxes: number = calc_dist_between_boxes(box_arr[i], box_arr[j])
@@ -47,7 +44,6 @@ for(let i = 0; i < box_dist_arr.length; i++) {
 
     lowest_from_point_arr.push(lowest_distance);
 }
-//var lowest_points: [number, number] = [0, 0];
 
 for(var loops = 0; loops < 1000; loops++) {
     var find_lowest_return = find_lowest(lowest_from_point_arr);
@@ -96,9 +92,7 @@ circuit_sizes.sort((a, b) => Number(b) - Number(a));
 
 const largest_3_product = circuit_sizes[0] * circuit_sizes[1] * circuit_sizes[2];
 
-//circuits.push(lowest_points);
-
-function calc_dist_between_boxes(box1 :[number, number, number], box2 :[number, number, number]): number {
+function calc_dist_between_boxes(box1: number[], box2: number[]): number {
     return Math.sqrt(Math.pow(box1[0] - box2[0], 2) + Math.pow(box1[1] - box2[1], 2) + Math.pow(box1[2] - box2[2], 2));
 }
 
@@ -150,9 +144,6 @@ function check_in_circuit(box1 :number, box2 :number): [number, number] {
     return [circuit_box_1, circuit_box_2];
 }
 
-
 console.log(circuits)
 console.log(circuit_sizes);
 console.log(largest_3_product);
-
-// 576 too low
