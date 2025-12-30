@@ -1,8 +1,8 @@
-//  from start of 13
+//  from start of 17
 import * as fs from 'fs';
 
-//const data_path: string = "11_data_test.txt";
-const data_path: string   = "11_data.txt";
+//const data_path: string = "17_data_test.txt";
+const data_path: string   = "17_data.txt";
 const data: string = fs.readFileSync(data_path, 'utf-8');
 const data_arr: string[] = data.split(/\r?\n/);
 
